@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="ExerciceMonster.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="450" Width="843">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Connection String Section -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Connection String:" FontWeight="Bold" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding ConnectionString, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="10,0" Width="416"/>
+            <Button Content="Save" Command="{Binding SaveConnectionStringCommand}" Margin="10,0"/>
+        </StackPanel>
+
+        <!-- Database Details -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button Content="Refresh Database Details" Command="{Binding RefreshDatabaseDetailsCommand}" 
+                    HorizontalAlignment="Left" Margin="0,0,0,10" Width="200"/>
+
+            <ListBox Grid.Row="1" ItemsSource="{Binding DatabaseDetails}" Margin="0,10,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="5"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

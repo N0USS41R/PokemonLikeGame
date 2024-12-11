@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="ExerciceMonster.Views.CombatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800"
+             Focusable="True"
+             KeyDown="UserControl_KeyDown">
+    <UserControl.Resources>
+        
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
+
+        <Style x:Key="ProgressBarStyle" TargetType="ProgressBar">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Foreground" Value="#FF8C00"/>
+            <Setter Property="Margin" Value="0,5"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{Binding BackgroundImageBrush}">
+        
+        <Canvas x:Name="GameCanvas" Background="Transparent">
+            
+            <Image x:Name="PlayerPokemonImage"
+       Source="{Binding PlayerMonster.ImageURL}"
+       Width="100" Height="100"
+       Canvas.Left="{Binding PlayerPokemonX}"
+       Canvas.Top="{Binding PlayerPokemonY}"
+       MouseLeftButtonDown="PlayerPokemonImage_MouseLeftButtonDown"/>
+
+            <Image x:Name="EnemyPokemonImage"
+       Source="{Binding EnemyMonster.ImageURL}"
+       Width="100" Height="100"
+       Canvas.Left="{Binding EnemyPokemonX}"
+       Canvas.Top="{Binding EnemyPokemonY}"
+       MouseLeftButtonDown="PlayerPokemonImage_MouseLeftButtonDown"/>
+
+
+            
+            <Button x:Name="FightButton"
+                    Content="Fight!"
+                    Width="100" Height="50"
+                    Canvas.Left="50"
+                    Canvas.Top="50"
+                    Style="{StaticResource ButtonStyle}"
+                    Visibility="Collapsed"
+                    Click="FightButton_Click"/>
+        </Canvas>
+
+        
+        <Grid x:Name="CombatInterface" Visibility="Collapsed">
+            <Grid Background="#AA000000">
+                <Grid Margin="10" Background="#F5F5F5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    
+                    <StackPanel Grid.Column="0" Margin="10">
+                        
+                        <Image Width="100" Height="100" 
+                       Source="{Binding PlayerMonster.ImageURL}" 
+                       HorizontalAlignment="Center" Margin="0,10"/>
+                        <TextBlock Text="Player's Monster" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" Foreground="#333"/>
+                        <TextBlock Text="{Binding PlayerMonster.Name}" FontSize="16" Foreground="#555"/>
+                        <ProgressBar Value="{Binding PlayerHP}" Maximum="{Binding PlayerMonster.Health}" Style="{StaticResource ProgressBarStyle}" Margin="0,5,0,10"/>
+                        <TextBlock Text="Spells:" FontSize="16" Margin="10,0,0,10"/>
+                        <ItemsControl ItemsSource="{Binding PlayerSpells}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Name}" 
+                                    Command="{Binding DataContext.AttackCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    CommandParameter="{Binding}" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Stretch"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    
+                    <StackPanel Grid.Column="1" Margin="10" HorizontalAlignment="Center">
+                        
+                        <Image Width="100" Height="100" 
+                       Source="{Binding EnemyMonster.ImageURL}" 
+                       HorizontalAlignment="Center" Margin="0,10"/>
+                        <TextBlock Text="Enemy Monster" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" Foreground="#333"/>
+                        <TextBlock Text="{Binding EnemyMonster.Name}" FontSize="16" Foreground="#555"/>
+                        <ProgressBar Value="{Binding EnemyHP}" Maximum="{Binding EnemyMonster.Health}" Style="{StaticResource ProgressBarStyle}" Margin="0,5,0,10"/>
+                        <Button Content="Restart Combat" Command="{Binding RestartCombatCommand}" Width="200" Margin="20" Style="{StaticResource ButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>
